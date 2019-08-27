@@ -223,6 +223,7 @@ function retrieve() {
     "abstract",
     "articleId",
     "comments",
+    "user_id"
     
   );
 }
