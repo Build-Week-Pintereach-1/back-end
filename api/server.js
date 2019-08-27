@@ -178,7 +178,7 @@ server.get("/test", authenticate2, (rec, rez) => {
 });
 
 function usersRegis() {
-  return db("users").select("username", "password");
+  return db("users").select("username", "password","id");
 }
 
 function authenticate2(req, res, next) {
