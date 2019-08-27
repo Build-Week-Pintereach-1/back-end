@@ -216,14 +216,14 @@ function retrieve() {
   console.log("find article");
   return db("board").select(
     "id",
+    "user_id",
     "board",
     "title",
     "authors",
     "journal",
     "abstract",
     "articleId",
-    "comments",
-    "user_id"
+    "comments"
     
   );
 }

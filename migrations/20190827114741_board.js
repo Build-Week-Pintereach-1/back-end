@@ -6,9 +6,9 @@ exports.up = function(knex, Promise) {
       .unsigned()
       .notNullable()
       .references("id")
-      .inTable("users")
-      .onDelete("CASCADE")
-      .onUpdate("CASCADE");
+      .inTable("users");
+    //   .onDelete("CASCADE")
+    //   .onUpdate("CASCADE");
 
     tbl.string("board", 255).notNullable();
     tbl.string("title", 255).notNullable();
