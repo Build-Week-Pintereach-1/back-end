@@ -221,7 +221,7 @@ function retrieve() {
     "authors",
     "journal",
     "abstract",
-    "url",
+    "articleId",
     "comments",
     
   );
