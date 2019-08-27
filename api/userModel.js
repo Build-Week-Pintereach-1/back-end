@@ -3,7 +3,7 @@ const mappers = require('./mappers');
 
 module.exports = {
   get,
-  getUsersGuests
+  getUsersArticles
 }
 function get(id) {
     let query = db("users as p");
@@ -11,13 +11,13 @@ function get(id) {
     if (id) {
       query.where("p.id", id).first();
   
-      const promises = [query, this.getUserGuests(id)]; // [ users, guests ]
+      const promises = [query, this.getUserArticles(id)]; 
   
       return Promise.all(promises).then(function(results) {
-        let [user, guests] = results;
+        let [user, articles] = results;
   
         if (user) {
-          user.guests = guests;
+          user.articles = articles;
   
           return mappers.userToBody(user);
         } else {
@@ -30,8 +30,8 @@ function get(id) {
       return users.map(user => mappers.userToBody(user));
     });
   }
-  function getUsersGuests(userId) {
-    return db('guest')
+  function getUsersArticles(userId) {
+    return db('board')
       .where('user_id', userId)
-      .then(guests => guests.map(guest => mappers.guestToBody(guest)));
+      .then(articles => articles.map(article => mappers.articleToBody(article)));
   }

@@ -11,10 +11,10 @@ module.exports = {
         completed: intToBoolean(user.completed)
       };
     
-      if (user.guests) {
-        result.guests = user.guests.map(guest => ({
-          ...guest,
-          completed: intToBoolean(guest.completed)
+      if (user.articles) {
+        result.articles = user.articles.map(article => ({
+          ...article,
+          completed: intToBoolean(article.completed)
         }));
       }
     

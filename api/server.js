@@ -202,7 +202,7 @@ function authenticate2(req, res, next) {
 }
 
 server.get("/articles", authenticate2, (req, res) => {
-  console.log("starting to get g");
+  console.log("starting to get articles");
   retrieve()
     .then(article => {
       res.status(200).json(article);
@@ -214,7 +214,7 @@ server.get("/articles", authenticate2, (req, res) => {
 
 function retrieve() {
   console.log("find article");
-  return db("articles").select(
+  return db("board").select(
     "id",
     "board",
     "title",
@@ -267,14 +267,14 @@ async function addPost(post) {
   console.log(post);
 
   try {
-    await db("articles").insert(post);
+    await db("board").insert(post);
   } catch (e) {
-    console.log("shits not working");
+    console.log("this not working");
     console.log(e);
   }
 
   console.log("after");
-  return `New Post ID: ${post.names} : Added :)`;
+  return `New Post ID: ${post.user_id} : Added :)`;
 }
 
 //-----------------------------------------------
@@ -282,7 +282,7 @@ async function addPost(post) {
 server.delete("/deletearticle/:id", authenticate2, (rec, rez) => {
   let deleted = rec.params.id;
 
-  db("articles")
+  db("board")
     .where({ id: deleted })
     .del()
     .then(gone => {
@@ -306,12 +306,12 @@ server.delete("/deletearticle/:id", authenticate2, (rec, rez) => {
 server.put("/updatearticle/:id", authenticate2, (reck, rez) => {
   let updoot = reck.params.id;
 
-  db("articles")
+  db("board")
     .where({ id: updoot })
     .update(reck.body)
     .then(newlook => {
       if (newlook > 0) {
-        db("articles")
+        db("board")
           .where({ id: reck.params.id })
           .then(things => {
             rez.status(201).json({ message: "you have successfully uploaded" });
