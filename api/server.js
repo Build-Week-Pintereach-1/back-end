@@ -229,9 +229,9 @@ function retrieve() {
 }
 
 server.get("/articles/users/:usersId", authenticate2, (req, res) => {
-  console.log(req.params.userId);
+  console.log(req.params.usersId);
   datab
-    .getUsersArticles(req.params.userId)
+    .getUsersArticles(req.params.usersId)
     .then(users => {
       console.log(user);
       if (users) {
