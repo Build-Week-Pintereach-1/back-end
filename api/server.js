@@ -201,11 +201,11 @@ function authenticate2(req, res, next) {
   }
 }
 
-server.get("/guests", authenticate2, (req, res) => {
+server.get("/articles", authenticate2, (req, res) => {
   console.log("starting to get g");
   retrieve()
-    .then(guest => {
-      res.status(200).json(guest);
+    .then(article => {
+      res.status(200).json(article);
     })
     .catch(err => {
       res.status(500).json({ error: { error } });
@@ -213,22 +213,24 @@ server.get("/guests", authenticate2, (req, res) => {
 });
 
 function retrieve() {
-  console.log("find guest");
-  return db("guests").select(
+  console.log("find article");
+  return db("articles").select(
     "id",
-    "names",
-    "email",
-    "phone_number",
-    "number_of_guests",
-    "number_of_rooms",
-    "dates_staying",
+    "board",
+    "title",
+    "authors",
+    "journal",
+    "abstract",
+    "url",
+    "comments",
     "user_id"
   );
 }
-server.get("/guests/users/:usersId", authenticate2, (req, res) => {
+
+server.get("/articles/users/:usersId", authenticate2, (req, res) => {
   console.log(req.params.userId);
   datab
-    .getUsersGuests(req.params.userId)
+    .getUsersArticles(req.params.userId)
     .then(users => {
       console.log(user);
       if (users) {
@@ -246,8 +248,8 @@ server.get("/guests/users/:usersId", authenticate2, (req, res) => {
 
 //-----------------------------------------------
 
-server.post("/addguest", (req, res) => {
-  console.log("we gonna try to add an guest");
+server.post("/addarticle", (req, res) => {
+  console.log("we gonna try to add an article");
   let post = req.body;
 
   addPost(post)
@@ -265,22 +267,22 @@ async function addPost(post) {
   console.log(post);
 
   try {
-    await db("guests").insert(post);
+    await db("articles").insert(post);
   } catch (e) {
     console.log("shits not working");
     console.log(e);
   }
- 
+
   console.log("after");
   return `New Post ID: ${post.names} : Added :)`;
 }
 
 //-----------------------------------------------
 
-server.delete("/deleteguest/:id", authenticate2, (rec, rez) => {
+server.delete("/deletearticle/:id", authenticate2, (rec, rez) => {
   let deleted = rec.params.id;
 
-  db("guests")
+  db("articles")
     .where({ id: deleted })
     .del()
     .then(gone => {
@@ -301,15 +303,15 @@ server.delete("/deleteguest/:id", authenticate2, (rec, rez) => {
 
 //-----------------------------------------------
 
-server.put("/updateguest/:id", authenticate2, (reck, rez) => {
+server.put("/updatearticle/:id", authenticate2, (reck, rez) => {
   let updoot = reck.params.id;
 
-  db("guests")
+  db("articles")
     .where({ id: updoot })
     .update(reck.body)
     .then(newlook => {
       if (newlook > 0) {
-        db("guests")
+        db("articles")
           .where({ id: reck.params.id })
           .then(things => {
             rez.status(201).json({ message: "you have successfully uploaded" });
