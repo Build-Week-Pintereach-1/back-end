@@ -1,14 +1,14 @@
 exports.up = function(knex, Promise) {
   return knex.schema.createTable("board", tbl => {
     tbl.increments();
-    // tbl
-    //   .integer("user_id")
-    //   .unsigned()
-    //   .notNullable()
-    //   .references("id")
-    //   .inTable("users")
-    //   .onDelete("CASCADE")
-    //   .onUpdate("CASCADE");
+    tbl
+      .integer("user_id")
+      .unsigned()
+      .notNullable()
+      .references("id")
+      .inTable("users")
+      .onDelete("CASCADE")
+      .onUpdate("CASCADE");
 
     tbl.string("board", 255).notNullable();
     tbl.string("title", 255).notNullable();
