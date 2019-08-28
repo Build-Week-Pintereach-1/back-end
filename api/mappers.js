@@ -5,7 +5,7 @@ module.exports = {
   function intToBoolean(int) {
     return int === 1 ? true : false;
   }
-  function userToBody(user) {
+  function articleToBody(user) {
       const result = {
         ...user,
         completed: intToBoolean(user.completed)

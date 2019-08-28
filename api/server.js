@@ -32,10 +32,14 @@ server.post("/register", (req, res) => {
   userInfo.password = hash;
 
   addUserPerson(userInfo)
-    .then(saved => {
-      res.status(201).json(saved);
-      console.log(userInfo.username);
-      console.log(userInfo.password);
+    .then(user => {
+      let tokenThing = token(user);
+
+      res.status(202).json({
+        message: `Welcome ${user.username} !`,
+        tokenThing,
+        id: user.id
+      });
     })
     .catch(error => {
       res.status(501).json({ message: `Registration Error!!! ${error}` });
@@ -45,7 +49,7 @@ server.post("/register", (req, res) => {
 async function addUserPerson(user) {
   const paul = await db("users").insert(user);
 
-  return `New Person Added: ${user.username}`;
+  return user;
 }
 
 //---------------------------------------------------
@@ -178,7 +182,7 @@ server.get("/test", authenticate2, (rec, rez) => {
 });
 
 function usersRegis() {
-  return db("users").select("username", "password","id");
+  return db("users").select("username", "password", "id");
 }
 
 function authenticate2(req, res, next) {
@@ -224,7 +228,6 @@ function retrieve() {
     "abstract",
     "articleId",
     "comments"
-    
   );
 }
 
