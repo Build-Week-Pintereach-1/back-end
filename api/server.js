@@ -230,23 +230,32 @@ function retrieve() {
     "comments"
   );
 }
+function retrieve2(user_id) {
+  console.log("find article");
+  return db("board")
+    .select(
+      "id",
+      "user_id",
+      "board",
+      "title",
+      "authors",
+      "journal",
+      "abstract",
+      "articleId",
+      "comments"
+    )
+    .where("user_id", user_id);
+}
 
 server.get("/articles/users/:usersId", authenticate2, (req, res) => {
   console.log(req.params.usersId);
   datab
-    .getUsersArticles(req.params.usersId)
-    .then(users => {
-      console.log(user);
-      if (users) {
-        res.status(200).json(users);
-      } else {
-        res
-          .status(404)
-          .json({ error: "The user with the specified ID does not exist." });
-      }
+    .retrieve2(req.params.usersId)
+    .then(article => {
+      res.status(200).json(article);
     })
     .catch(err => {
-      res.status(500).json({ error: "there was an error" });
+      res.status(500).json({ error: { error } });
     });
 });
 
