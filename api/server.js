@@ -26,34 +26,6 @@ server.get("/", (req, res) => {
 
 //----------------------------------------------------
 
-server.post("/register", (req, res) => {
-  let userInfo = req.body;
-  const hash = bcrypt.hashSync(userInfo.password, 12);
-  userInfo.password = hash;
-
-  addUserPerson(userInfo)
-    .then(user => {
-      let tokenThing = token(user);
-
-      res.status(202).json({
-        message: `Welcome ${user.username} !`,
-        tokenThing,
-        id: user.id
-      });
-    })
-    .catch(error => {
-      res.status(501).json({ message: `Registration Error!!! ${error}` });
-    });
-});
-
-async function addUserPerson(user) {
-  const paul = await db("users").insert(user);
-
-  return user;
-}
-
-//---------------------------------------------------
-
 function token(person) {
   console.log("getting a token is starting");
   const payload = {
@@ -71,6 +43,38 @@ function token(person) {
 function search(x) {
   return db("users").where(x);
 }
+server.post("/register", (req, res) => {
+  let userInfo = req.body;
+  const hash = bcrypt.hashSync(userInfo.password, 12);
+  userInfo.password = hash;
+ 
+  addUserPerson(userInfo)
+    .then(user => {
+      search({username: user.username})
+        .first()
+        .then(user => {
+          let tokenThing = token(user);
+ 
+          res.status(202).json({
+             id: user.id,
+             message: `Welcome ${user.username} !`,
+             tokenThing
+           });
+         })
+    })
+ 
+    .catch(error => {
+      res.status(501).json({ message: `Registration Error!!! ${error}` });
+    });
+ });
+ 
+ async function addUserPerson(user) {
+  const paul = await db("users").insert(user);
+ 
+  return user;
+ }
+
+//---------------------------------------------------
 
 server.post("/login", (req, res) => {
   let username = req.body.username;
@@ -249,8 +253,8 @@ function retrieve2(user_id) {
 
 server.get("/articles/users/:usersId", authenticate2, (req, res) => {
   console.log(req.params.usersId);
- 
-    retrieve2(req.params.usersId)
+
+  retrieve2(req.params.usersId)
     .then(article => {
       res.status(200).json(article);
     })
