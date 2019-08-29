@@ -10,13 +10,13 @@ exports.up = function(knex, Promise) {
       .onDelete("CASCADE")
       .onUpdate("CASCADE");
 
-    tbl.string("board", 255).notNullable();
-    tbl.string("title", 255).notNullable();
-    tbl.string("authors", 255).notNullable();
-    tbl.string("journal", 255);
-    tbl.string("abstract", 255).notNullable();
-    tbl.string("articleId", 255).notNullable();
-    tbl.string("comments", 255).notNullable();
+    tbl.string("board", 2000).notNullable();
+    tbl.string("title", 2000).notNullable();
+    tbl.string("authors", 2000).notNullable();
+    tbl.string("journal", 2000);
+    tbl.string("abstract",9999).notNullable();
+    tbl.string("articleId", 2000).notNullable();
+    tbl.string("comments",2000).notNullable();
   });
 };
 
